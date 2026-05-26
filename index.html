@@ -201,6 +201,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
   border:1px solid rgba(0,229,255,.12);border-radius:2px;color:var(--muted);}
 
 /* ── CERTIFICATIONS ── */
+
+.certs-layout{display:grid;grid-template-columns:1fr 1fr;gap:1.75rem;max-width:1100px;}
+.cert-full{grid-column:1 / -1;}
+@media(max-width:700px){.certs-layout{grid-template-columns:1fr;}}
 .cert-vendor-block{margin-bottom:3rem;max-width:1100px;}
 .cert-v-head{display:flex;align-items:center;gap:1.25rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border);}
 /* Logo badges */
@@ -218,7 +222,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .vl-malcolm{background:var(--bg);color:var(--c1);border:1px solid var(--c1);}
 .cert-v-name{font-family:var(--fh);font-size:1.5rem;letter-spacing:.03em;}
 .cert-v-sub{font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:.1rem;}
-.cert-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.75rem;}
+.cert-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.75rem;}
+.cert-full .cert-cards{grid-template-columns:repeat(auto-fill,minmax(200px,1fr));}
 .cert-c{background:var(--bg3);border:1px solid var(--border);border-radius:3px;padding:1.25rem;transition:all .3s;}
 .cert-c:hover{border-color:rgba(0,229,255,.25);transform:translateY(-3px);box-shadow:var(--glow);}
 .cert-c-title{font-size:.85rem;font-weight:600;margin-bottom:.25rem;}
@@ -388,12 +393,12 @@ footer a:hover{color:var(--c1);}
     <p>Holding an <strong>MSc in Cybersecurity Engineering</strong> from the University of Warwick (WMG Excellence Scholar) and a <strong>Black Hat Europe 2024 Scholarship</strong> recipient, I work across the full security stack: network hardening, SOC operations, penetration testing, cloud security, and digital forensics.</p>
     <p>Based in the <strong>UK</strong>. Full right to work — no sponsorship required. Open to on-site and hybrid roles nationwide. Happy to relocate.</p>
     <div class="pills">
-      <span class="pill">🇬🇧 Full UK work rights</span>
-      <span class="pill">✅ No sponsorship</span>
-      <span class="pill">🔒 SC clearance ready</span>
-      <span class="pill">✈️ Open to relocate</span>
-      <span class="pill">🎓 WMG Scholar</span>
-      <span class="pill">🛡️ Black Hat Scholar '24</span>
+      <span class="pill">Full UK work rights</span>
+      <span class="pill">No sponsorship</span>
+      <span class="pill">SC clearance ready</span>
+      <span class="pill">Open to relocate</span>
+      <span class="pill">WMG Scholar</span>
+      <span class="pill">Black Hat Scholar 2024</span>
     </div>
   </div>
 </section>
@@ -506,6 +511,7 @@ footer a:hover{color:var(--c1);}
   <div class="s-eyebrow rv">Qualifications</div>
   <div class="s-head rv">Certifications</div>
 
+  <div class="certs-layout">
   <div class="cert-vendor-block rv">
     <div class="cert-v-head">
       <div class="v-logo" style="background:#1ba0d7;flex-direction:column;gap:2px;padding:5px;align-items:center;justify-content:center;">
@@ -585,7 +591,7 @@ footer a:hover{color:var(--c1);}
     </div>
   </div>
 
-  <div class="cert-vendor-block rv">
+  <div class="cert-vendor-block rv cert-full">
     <div class="cert-v-head">
       <div style="width:44px;height:44px;border-radius:6px;background:var(--bg);border:1px solid var(--c1);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;gap:1px;">
   <svg viewBox="0 0 24 20" width="22" height="18"><circle cx="12" cy="8" r="5" fill="none" stroke="#00e5ff" stroke-width="1.5"/><path d="M4 18c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="#00e5ff" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
@@ -596,6 +602,7 @@ footer a:hover{color:var(--c1);}
     <div class="cert-cards">
       <div class="cert-c"><div class="cert-c-title">Penetration Testing — Kali &amp; Burp Suite</div><div class="cert-c-code">Malcolm Shore</div><div class="cert-c-desc">Practical penetration testing: reconnaissance, web application exploitation with Burp Suite, and full attack chain execution with Kali Linux.</div></div>
     </div>
+  </div>
   </div>
 </section>
 
