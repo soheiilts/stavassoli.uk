@@ -331,7 +331,7 @@ footer a:hover{color:var(--c1);}
     <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#certifications">Certs</a></li>
-    <li><a href="#hobbies">Music</a></li>
+    <li><a href="#tools">Tools</a></li><li><a href="#hobbies">Music</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-badge"><div class="pulse"></div>Open to work</div>
@@ -598,6 +598,431 @@ footer a:hover{color:var(--c1);}
     </div>
   </div>
 </section>
+
+
+<!-- ── TOOLS SECTION ─────────────────────────────────────────────────────── -->
+<section id="tools" class="sec sec-bg">
+  <div class="s-eyebrow rv">Built by Sam</div>
+  <div class="s-head rv">Security Tools</div>
+  <p class="rv" style="font-size:.9rem;color:var(--muted);margin-bottom:2.5rem;max-width:700px;">
+    Interactive tools built to demonstrate applied networking and security knowledge.
+    All calculations run client-side. CVE data pulled live from the National Vulnerability Database (NVD).
+  </p>
+
+  <!-- Tool tab switcher -->
+  <div class="tool-tabs rv">
+    <button class="tool-tab active" onclick="switchTool('vlsm',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="5" rx="1"/><rect x="13" y="11" width="9" height="9" rx="1"/><rect x="2" y="15" width="9" height="5" rx="1"/></svg>
+      VLSM Calculator
+    </button>
+    <button class="tool-tab" onclick="switchTool('cve',this)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      CVE Explorer
+    </button>
+  </div>
+
+  <!-- ══════════ VLSM TOOL ══════════ -->
+  <div class="tool-panel" id="panel-vlsm">
+    <div class="tool-grid">
+      <!-- LEFT: inputs -->
+      <div class="tool-inputs">
+        <div class="tool-input-group">
+          <label class="tool-label">Base Network Address</label>
+          <div style="display:flex;gap:.5rem;">
+            <input id="vlsm-ip" class="tool-input" placeholder="e.g. 192.168.1.0" value="192.168.1.0" style="flex:1;">
+            <span class="tool-slash">/</span>
+            <input id="vlsm-prefix" class="tool-input" type="number" min="1" max="30" value="24" style="width:64px;text-align:center;">
+          </div>
+        </div>
+
+        <div class="tool-input-group">
+          <label class="tool-label">Subnet Requirements</label>
+          <div id="vlsm-rows">
+            <div class="vlsm-row"><input class="tool-input" placeholder="Subnet name" value="HQ Office"><input class="tool-input" type="number" placeholder="Hosts" value="50" min="1"><button class="vlsm-del" onclick="delRow(this)">✕</button></div>
+            <div class="vlsm-row"><input class="tool-input" placeholder="Subnet name" value="Branch A"><input class="tool-input" type="number" placeholder="Hosts" value="25" min="1"><button class="vlsm-del" onclick="delRow(this)">✕</button></div>
+            <div class="vlsm-row"><input class="tool-input" placeholder="Subnet name" value="Branch B"><input class="tool-input" type="number" placeholder="Hosts" value="12" min="1"><button class="vlsm-del" onclick="delRow(this)">✕</button></div>
+            <div class="vlsm-row"><input class="tool-input" placeholder="Subnet name" value="Management"><input class="tool-input" type="number" placeholder="Hosts" value="4" min="1"><button class="vlsm-del" onclick="delRow(this)">✕</button></div>
+          </div>
+          <button class="tool-add-row" onclick="addRow()">+ Add Subnet</button>
+        </div>
+
+        <button class="tool-run-btn" onclick="runVLSM()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Calculate VLSM
+        </button>
+      </div>
+
+      <!-- RIGHT: results -->
+      <div class="tool-results" id="vlsm-results">
+        <div class="tool-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,.2)" stroke-width="1.5"><rect x="2" y="2" width="9" height="9" rx="1"/><rect x="13" y="2" width="9" height="5" rx="1"/><rect x="13" y="11" width="9" height="9" rx="1"/><rect x="2" y="15" width="9" height="5" rx="1"/></svg>
+          <p>Configure subnets and click Calculate</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CVE TOOL ══════════ -->
+  <div class="tool-panel" id="panel-cve" style="display:none;">
+    <div class="cve-search-row">
+      <div class="cve-type-toggle">
+        <button class="cve-type active" id="btn-keyword" onclick="setCveType('keyword',this)">Keyword</button>
+        <button class="cve-type" id="btn-cveid" onclick="setCveType('cveid',this)">CVE ID</button>
+      </div>
+      <input id="cve-input" class="tool-input cve-input" placeholder="Search e.g. Apache Log4j" onkeydown="if(event.key==='Enter')runCVE()">
+      <button class="tool-run-btn" onclick="runCVE()" style="white-space:nowrap;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search NVD
+      </button>
+    </div>
+    <div class="cve-quick-searches">
+      <span style="font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing:.1em;">QUICK:</span>
+      <button class="cve-quick" onclick="quickCve('Log4Shell')">Log4Shell</button>
+      <button class="cve-quick" onclick="quickCve('EternalBlue')">EternalBlue</button>
+      <button class="cve-quick" onclick="quickCve('Heartbleed')">Heartbleed</button>
+      <button class="cve-quick" onclick="quickCve('WannaCry')">WannaCry</button>
+      <button class="cve-quick" onclick="quickCve('CVE-2024-3094')">XZ Backdoor</button>
+    </div>
+    <div id="cve-results" class="cve-results">
+      <div class="tool-placeholder">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="rgba(0,229,255,.2)" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <p>Search CVEs by keyword or ID — powered by NVD</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+/* ── TOOLS ────────────────────────────────────────────────────── */
+.tool-tabs{display:flex;gap:.5rem;margin-bottom:2rem;border-bottom:1px solid var(--border);padding-bottom:0;}
+.tool-tab{display:flex;align-items:center;gap:.5rem;padding:.75rem 1.5rem;
+  font-family:var(--fm);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--muted);background:none;border:none;border-bottom:2px solid transparent;
+  cursor:pointer;transition:all .3s;margin-bottom:-1px;}
+.tool-tab:hover{color:var(--c1);}
+.tool-tab.active{color:var(--c1);border-bottom-color:var(--c1);}
+.tool-panel{animation:fadeUp .3s ease;}
+.tool-grid{display:grid;grid-template-columns:320px 1fr;gap:2rem;min-height:420px;}
+.tool-inputs{display:flex;flex-direction:column;gap:1.25rem;}
+.tool-input-group{display:flex;flex-direction:column;gap:.5rem;}
+.tool-label{font-family:var(--fm);font-size:.62rem;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--c1);}
+.tool-input{background:var(--bg);border:1px solid var(--border);border-radius:3px;
+  padding:.65rem .85rem;font-family:var(--fm);font-size:.78rem;color:var(--text);
+  outline:none;transition:border-color .3s;width:100%;}
+.tool-input:focus{border-color:var(--c1);}
+.tool-input::placeholder{color:var(--muted);}
+.tool-slash{font-family:var(--fm);font-size:1.2rem;color:var(--muted);
+  display:flex;align-items:center;padding:0 .25rem;}
+.vlsm-row{display:grid;grid-template-columns:1fr 90px 28px;gap:.4rem;margin-bottom:.4rem;align-items:center;}
+.vlsm-del{background:none;border:1px solid var(--border);border-radius:3px;
+  color:var(--muted);cursor:pointer;padding:.4rem;font-size:.65rem;
+  transition:all .2s;line-height:1;}
+.vlsm-del:hover{border-color:#ef4444;color:#ef4444;}
+.tool-add-row{background:none;border:1px dashed var(--border);border-radius:3px;
+  color:var(--muted);cursor:pointer;padding:.6rem;font-family:var(--fm);
+  font-size:.68rem;letter-spacing:.08em;width:100%;transition:all .3s;}
+.tool-add-row:hover{border-color:var(--c1);color:var(--c1);}
+.tool-run-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;
+  background:var(--c1);color:#030711;font-family:var(--fm);font-size:.72rem;
+  font-weight:700;letter-spacing:.08em;text-transform:uppercase;border:none;
+  border-radius:3px;padding:.85rem;cursor:pointer;transition:all .3s;width:100%;}
+.tool-run-btn:hover{background:#00ffff;box-shadow:0 0 20px rgba(0,229,255,.4);}
+.tool-results{background:var(--bg);border:1px solid var(--border);border-radius:4px;
+  padding:1.5rem;overflow:auto;}
+.tool-placeholder{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;height:100%;min-height:200px;gap:1rem;text-align:center;}
+.tool-placeholder p{font-family:var(--fm);font-size:.7rem;color:var(--muted);}
+
+/* VLSM Results */
+.vlsm-table{width:100%;border-collapse:collapse;font-family:var(--fm);font-size:.72rem;}
+.vlsm-table th{text-align:left;padding:.5rem .75rem;color:var(--c1);
+  font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;
+  border-bottom:1px solid var(--border);}
+.vlsm-table td{padding:.6rem .75rem;color:var(--text);border-bottom:1px solid rgba(255,255,255,.04);}
+.vlsm-table tr:hover td{background:rgba(0,229,255,.04);}
+.vlsm-badge{display:inline-block;padding:.2rem .6rem;border-radius:2px;
+  font-size:.62rem;font-weight:700;white-space:nowrap;}
+.vlsm-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.25rem;}
+.vlsm-stat{background:var(--bg2);border:1px solid var(--border);border-radius:3px;
+  padding:.75rem;text-align:center;}
+.vlsm-stat-n{font-family:var(--fh);font-size:1.6rem;color:var(--c1);}
+.vlsm-stat-l{font-family:var(--fm);font-size:.58rem;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.1em;}
+.vlsm-error{color:#ef4444;font-family:var(--fm);font-size:.75rem;
+  padding:.75rem;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:3px;}
+
+/* CVE tool */
+.cve-search-row{display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem;}
+.cve-input{flex:1;}
+.cve-type-toggle{display:flex;border:1px solid var(--border);border-radius:3px;overflow:hidden;flex-shrink:0;}
+.cve-type{background:none;border:none;padding:.5rem .9rem;font-family:var(--fm);
+  font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);cursor:pointer;transition:all .2s;}
+.cve-type.active{background:var(--c1);color:#030711;font-weight:700;}
+.cve-quick-searches{display:flex;align-items:center;flex-wrap:wrap;gap:.5rem;margin-bottom:1.5rem;}
+.cve-quick{background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);
+  border-radius:100px;padding:.3rem .85rem;font-family:var(--fm);font-size:.65rem;
+  color:var(--muted);cursor:pointer;transition:all .2s;}
+.cve-quick:hover{background:rgba(0,229,255,.15);border-color:var(--c1);color:var(--c1);}
+.cve-results{display:flex;flex-direction:column;gap:.75rem;}
+.cve-card{background:var(--bg);border:1px solid var(--border);border-radius:4px;
+  padding:1.25rem;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.cve-card::before{content:'';position:absolute;left:0;top:0;bottom:0;
+  width:3px;border-radius:3px 0 0 3px;}
+.cve-card:hover{border-color:rgba(0,229,255,.3);transform:translateX(4px);}
+.cve-card-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:.5rem;}
+.cve-id{font-family:var(--fm);font-size:.78rem;font-weight:700;color:var(--c1);}
+.cve-score{font-family:var(--fh);font-size:1.4rem;letter-spacing:.05em;line-height:1;}
+.cve-severity{font-family:var(--fm);font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;}
+.cve-score-block{text-align:right;}
+.cve-desc{font-size:.78rem;color:var(--muted);line-height:1.65;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.cve-meta{display:flex;gap:1.25rem;margin-top:.6rem;flex-wrap:wrap;}
+.cve-meta-item{font-family:var(--fm);font-size:.6rem;color:var(--muted);}
+.cve-meta-item span{color:var(--text);}
+.cve-detail-body{margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);display:none;}
+.cve-detail-body.open{display:block;}
+.cve-desc-full{font-size:.78rem;color:var(--muted);line-height:1.7;margin-bottom:.75rem;}
+.cve-refs{display:flex;flex-wrap:wrap;gap:.4rem;}
+.cve-ref{font-family:var(--fm);font-size:.6rem;padding:.2rem .6rem;
+  background:rgba(0,229,255,.06);border:1px solid rgba(0,229,255,.15);
+  border-radius:2px;color:var(--c1);text-decoration:none;}
+.cve-ref:hover{background:rgba(0,229,255,.15);}
+.cve-loading{text-align:center;padding:3rem;font-family:var(--fm);font-size:.75rem;color:var(--muted);}
+.cve-loading::after{content:'';display:inline-block;width:16px;height:16px;
+  border:2px solid var(--border);border-top-color:var(--c1);border-radius:50%;
+  animation:spin .8s linear infinite;margin-left:.75rem;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.cve-error{padding:1.5rem;text-align:center;font-family:var(--fm);font-size:.75rem;
+  color:#ef4444;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);border-radius:4px;}
+.cve-empty{padding:2rem;text-align:center;font-family:var(--fm);font-size:.75rem;color:var(--muted);}
+@media(max-width:900px){.tool-grid{grid-template-columns:1fr;}.cve-search-row{flex-wrap:wrap;}}
+</style>
+
+<script>
+// ── Tool switcher ──────────────────────────────────────────────────────────
+function switchTool(id, btn){
+  document.querySelectorAll('.tool-panel').forEach(p=>p.style.display='none');
+  document.querySelectorAll('.tool-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('panel-'+id).style.display='block';
+  btn.classList.add('active');
+}
+
+// ── VLSM Calculator ────────────────────────────────────────────────────────
+function addRow(){
+  const row = document.createElement('div');
+  row.className = 'vlsm-row';
+  row.innerHTML = '<input class="tool-input" placeholder="Subnet name"><input class="tool-input" type="number" placeholder="Hosts" min="1"><button class="vlsm-del" onclick="delRow(this)">✕</button>';
+  document.getElementById('vlsm-rows').appendChild(row);
+}
+function delRow(btn){ btn.closest('.vlsm-row').remove(); }
+
+function ipToInt(ip){
+  const p = ip.split('.').map(Number);
+  if(p.length!==4 || p.some(x=>isNaN(x)||x<0||x>255)) return null;
+  return ((p[0]<<24)|(p[1]<<16)|(p[2]<<8)|p[3])>>>0;
+}
+function intToIp(n){ return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.'); }
+function cidrToMask(p){ return p===0?0:(~0<<(32-p))>>>0; }
+
+function runVLSM(){
+  const ip  = document.getElementById('vlsm-ip').value.trim();
+  const pfx = parseInt(document.getElementById('vlsm-prefix').value);
+  const rows = [...document.querySelectorAll('#vlsm-rows .vlsm-row')];
+  const res  = document.getElementById('vlsm-results');
+
+  const baseInt = ipToInt(ip);
+  if(!baseInt && baseInt!==0){ res.innerHTML='<div class="vlsm-error">Invalid IP address</div>'; return; }
+  if(isNaN(pfx)||pfx<1||pfx>30){ res.innerHTML='<div class="vlsm-error">Prefix must be between 1 and 30</div>'; return; }
+
+  const subnets = rows.map(r=>{
+    const inputs = r.querySelectorAll('input');
+    return { name: inputs[0].value.trim()||'Subnet', hosts: parseInt(inputs[1].value)||0 };
+  }).filter(s=>s.hosts>0);
+
+  if(!subnets.length){ res.innerHTML='<div class="vlsm-error">Add at least one subnet requirement</div>'; return; }
+
+  // Sort descending
+  subnets.sort((a,b)=>b.hosts-a.hosts);
+
+  const baseSize = Math.pow(2, 32-pfx);
+  const baseEnd  = baseInt + baseSize;
+  let cur = baseInt;
+  const results = [];
+  const PALETTE = ['#00e5ff','#7c3aed','#10b981','#f59e0b','#ef4444','#06b6d4','#a855f7','#84cc16'];
+
+  for(let i=0;i<subnets.length;i++){
+    const s = subnets[i];
+    let bits = Math.ceil(Math.log2(s.hosts+2));
+    if(bits<1) bits=1;
+    const subPfx  = 32-bits;
+    const blkSize = Math.pow(2, bits);
+    // Align
+    const aligned = Math.ceil(cur/blkSize)*blkSize;
+    if(aligned+blkSize > baseEnd){
+      results.push({...s, error:true}); continue;
+    }
+    cur = aligned;
+    results.push({
+      name:s.name, hosts:s.hosts,
+      network:intToIp(cur),
+      prefix:subPfx,
+      mask:intToIp(cidrToMask(subPfx)),
+      first:intToIp(cur+1),
+      last:intToIp(cur+blkSize-2),
+      broadcast:intToIp(cur+blkSize-1),
+      usable:blkSize-2,
+      color:PALETTE[i%PALETTE.length],
+      wastage:blkSize-2-s.hosts,
+    });
+    cur += blkSize;
+  }
+
+  const used = cur - baseInt;
+  const utilPct = Math.round((used/baseSize)*100);
+
+  let html2 = `<div class="vlsm-summary">
+    <div class="vlsm-stat"><div class="vlsm-stat-n">${results.filter(r=>!r.error).length}</div><div class="vlsm-stat-l">Subnets Allocated</div></div>
+    <div class="vlsm-stat"><div class="vlsm-stat-n">${utilPct}%</div><div class="vlsm-stat-l">Space Used</div></div>
+    <div class="vlsm-stat"><div class="vlsm-stat-n">${intToIp(baseInt)}/${pfx}</div><div class="vlsm-stat-l">Base Network</div></div>
+  </div>
+  <table class="vlsm-table">
+    <thead><tr>
+      <th>Subnet</th><th>Network / CIDR</th><th>Subnet Mask</th>
+      <th>First Host</th><th>Last Host</th><th>Broadcast</th>
+      <th>Usable</th><th>Efficiency</th>
+    </tr></thead><tbody>`;
+
+  results.forEach(r=>{
+    if(r.error){
+      html2+=`<tr><td>${r.name}</td><td colspan="7" style="color:#ef4444;">⚠ Address space exhausted</td></tr>`;
+      return;
+    }
+    const eff = Math.round((r.hosts/r.usable)*100);
+    html2+=`<tr>
+      <td><span class="vlsm-badge" style="background:${r.color}22;border:1px solid ${r.color}55;color:${r.color};">${r.name}</span></td>
+      <td style="font-family:var(--fm);">${r.network}/${r.prefix}</td>
+      <td style="font-family:var(--fm);color:var(--muted);">${r.mask}</td>
+      <td style="font-family:var(--fm);">${r.first}</td>
+      <td style="font-family:var(--fm);">${r.last}</td>
+      <td style="font-family:var(--fm);color:var(--muted);">${r.broadcast}</td>
+      <td><span style="color:${r.color};font-family:var(--fm);">${r.usable}</span></td>
+      <td>
+        <div style="background:var(--bg2);border-radius:2px;height:6px;width:80px;overflow:hidden;">
+          <div style="background:${r.color};height:100%;width:${eff}%;transition:width .6s;"></div>
+        </div>
+        <span style="font-family:var(--fm);font-size:.6rem;color:var(--muted);">${eff}%</span>
+      </td>
+    </tr>`;
+  });
+  html2+='</tbody></table>';
+  res.innerHTML = html2;
+}
+
+// ── CVE Explorer ───────────────────────────────────────────────────────────
+let cveType = 'keyword';
+function setCveType(t, btn){
+  cveType = t;
+  document.querySelectorAll('.cve-type').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('cve-input').placeholder = t==='cveid' ? 'e.g. CVE-2021-44228' : 'e.g. Apache Log4j';
+}
+
+function quickCve(q){
+  const el = document.getElementById('cve-input');
+  if(q.startsWith('CVE-')){ setCveType('cveid', document.getElementById('btn-cveid')); }
+  else { setCveType('keyword', document.getElementById('btn-keyword')); }
+  el.value = q;
+  runCVE();
+}
+
+async function runCVE(){
+  const q   = document.getElementById('cve-input').value.trim();
+  const out = document.getElementById('cve-results');
+  if(!q){ out.innerHTML='<div class="cve-error">Enter a keyword or CVE ID</div>'; return; }
+
+  out.innerHTML='<div class="cve-loading">Querying NVD database</div>';
+
+  let url;
+  if(cveType==='cveid'){
+    url = `https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${encodeURIComponent(q)}`;
+  } else {
+    url = `https://services.nvd.nist.gov/rest/json/cves/2.0?keywordSearch=${encodeURIComponent(q)}&resultsPerPage=10&startIndex=0`;
+  }
+
+  try {
+    const resp = await fetch(url);
+    if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const items = data.vulnerabilities || [];
+    if(!items.length){ out.innerHTML='<div class="cve-empty">No CVEs found for this search.</div>'; return; }
+    out.innerHTML = items.map(v => renderCVE(v.cve)).join('');
+  } catch(e){
+    out.innerHTML=`<div class="cve-error">
+      Failed to reach NVD API. This may be a rate limit (5 req/30s) or CORS issue.<br>
+      <span style="color:var(--muted);font-size:.65rem;">Try again in 30 seconds. Error: ${e.message}</span>
+    </div>`;
+  }
+}
+
+function cvssColor(score){
+  if(score===null) return {bg:'rgba(100,116,139,.15)',border:'rgba(100,116,139,.3)',text:'#94a3b8',label:'N/A'};
+  if(score>=9.0) return {bg:'rgba(239,68,68,.15)',border:'rgba(239,68,68,.4)',text:'#ef4444',label:'CRITICAL'};
+  if(score>=7.0) return {bg:'rgba(245,158,11,.15)',border:'rgba(245,158,11,.4)',text:'#f59e0b',label:'HIGH'};
+  if(score>=4.0) return {bg:'rgba(234,179,8,.12)',border:'rgba(234,179,8,.3)',text:'#eab308',label:'MEDIUM'};
+  return {bg:'rgba(16,185,129,.12)',border:'rgba(16,185,129,.3)',text:'#10b981',label:'LOW'};
+}
+
+function getScore(cve){
+  try {
+    const m31 = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore;
+    const m30 = cve.metrics?.cvssMetricV30?.[0]?.cvssData?.baseScore;
+    const m2  = cve.metrics?.cvssMetricV2?.[0]?.cvssData?.baseScore;
+    return m31 ?? m30 ?? m2 ?? null;
+  } catch{ return null; }
+}
+
+function renderCVE(cve){
+  const id   = cve.id;
+  const score= getScore(cve);
+  const c    = cvssColor(score);
+  const desc = cve.descriptions?.find(d=>d.lang==='en')?.value || 'No description available.';
+  const pub  = cve.published ? new Date(cve.published).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const mod  = cve.lastModified ? new Date(cve.lastModified).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const refs = (cve.references||[]).slice(0,4);
+  const cwe  = cve.weaknesses?.[0]?.description?.[0]?.value || '—';
+  const uid  = id.replace(/[^a-z0-9]/gi,'');
+
+  return `<div class="cve-card" style="border-left:3px solid ${c.text};" onclick="toggleCVE('${uid}')">
+    <div class="cve-card-head">
+      <div>
+        <div class="cve-id">${id}</div>
+        <div class="cve-meta">
+          <span class="cve-meta-item">Published: <span>${pub}</span></span>
+          <span class="cve-meta-item">Modified: <span>${mod}</span></span>
+          <span class="cve-meta-item">CWE: <span>${cwe}</span></span>
+        </div>
+      </div>
+      <div class="cve-score-block">
+        <div class="cve-score" style="color:${c.text};">${score!==null?score.toFixed(1):'?'}</div>
+        <div class="cve-severity" style="color:${c.text};">${c.label}</div>
+      </div>
+    </div>
+    <div class="cve-desc">${desc}</div>
+    <div class="cve-detail-body" id="cve-detail-${uid}">
+      <div class="cve-desc-full">${desc}</div>
+      ${refs.length?`<div style="font-family:var(--fm);font-size:.6rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem;">References</div>
+        <div class="cve-refs">${refs.map(r=>`<a href="${r.url}" target="_blank" class="cve-ref" onclick="event.stopPropagation()">↗ ${new URL(r.url).hostname}</a>`).join('')}</div>`:''
+      }
+    </div>
+  </div>`;
+}
+
+function toggleCVE(uid){
+  const el = document.getElementById('cve-detail-'+uid);
+  if(el) el.classList.toggle('open');
+}
+</script>
 
 
 <!-- HOBBIES / MUSIC -->
